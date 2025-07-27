@@ -6,12 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Bookings Viewer</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="background-pattern"></div>
     <div class="container">
-        <h1>Live Bookings Viewer</h1>
-        <ul id="bookings-list"></ul>
+        <div class="header">
+            <div class="header-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <h1>Live Bookings Dashboard</h1>
+            <p class="subtitle">Real-time restaurant reservations</p>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>Live</span>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <i class="fas fa-utensils"></i>
+                <div class="stat-info">
+                    <span class="stat-number" id="total-bookings">0</span>
+                    <span class="stat-label">Total Bookings</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <div class="stat-info">
+                    <span class="stat-number" id="total-guests">0</span>
+                    <span class="stat-label">Total Guests</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bookings-section">
+            <div class="section-header">
+                <h2><i class="fas fa-list"></i> Recent Bookings</h2>
+                <div class="refresh-indicator" id="refresh-indicator">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+            </div>
+            <ul id="bookings-list"></ul>
+            <div class="empty-state" id="empty-state">
+                <i class="fas fa-calendar-plus"></i>
+                <h3>No bookings yet</h3>
+                <p>New reservations will appear here in real-time</p>
+            </div>
+        </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="main.js"></script>

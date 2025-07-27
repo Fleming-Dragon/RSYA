@@ -15,10 +15,10 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // Socket.IO connection
 io.on("connection", (socket) => {
-  // Send all previous bookings to the new client
+  // Send only the most recent 100 bookings to the new client
   bookings
-    .slice()
-    .reverse()
+    .slice(-100) // Get last 100 bookings
+    .reverse() // Show newest first
     .forEach((booking) => {
       socket.emit("new-booking", booking);
     });
@@ -36,13 +36,31 @@ function generateRandomBooking() {
   const partySizes = [2, 4, 6, 8, 10, 12, 20];
   const venueName = venues[Math.floor(Math.random() * venues.length)];
   const partySize = partySizes[Math.floor(Math.random() * partySizes.length)];
-  const time = new Date().toLocaleTimeString();
-  return { venueName, partySize, time };
+
+  // Generate a random time within the next 24 hours
+  const now = new Date();
+  const randomHours = Math.floor(Math.random() * 24);
+  const randomMinutes = Math.floor(Math.random() * 60);
+  const bookingTime = new Date(
+    now.getTime() + (randomHours * 60 + randomMinutes) * 60 * 1000
+  );
+
+  return {
+    venueName,
+    partySize,
+    time: bookingTime.toISOString(), // Send as ISO string for proper parsing
+  };
 }
 
 setInterval(() => {
   const booking = generateRandomBooking();
   bookings.push(booking);
+
+  // Keep only the most recent 100 bookings in memory
+  if (bookings.length > 100) {
+    bookings = bookings.slice(-100);
+  }
+
   io.emit("new-booking", booking);
 }, 5000);
 
