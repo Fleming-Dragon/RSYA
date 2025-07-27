@@ -57,4 +57,4 @@ day_27_07/
 
 ---
 
-**Author:** [Your Name]
+**Author:** Ved Mahajan
